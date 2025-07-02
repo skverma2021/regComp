@@ -1,15 +1,13 @@
-require('dotenv').config();
-const sql = require('mssql');
-
-const config = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  server: process.env.DB_SERVER,
-  database: process.env.DB_DATABASE,
+// server/db.js
+module.exports = {
+  user: process.env.DB_USER || 'your_user',
+  // password: process.env.DB_PASSWORD || 'your_password',
+  password: process.env.DB_PASSWORD || 'theUdemyUser',
+  server: process.env.DB_SERVER || 'localhost',
+  database: process.env.DB_DATABASE || 'compliance_db',
   options: {
-    encrypt: false,
     trustServerCertificate: true,
-  },
+    encrypt: false
+  }
 };
 
-module.exports = config;

@@ -34,27 +34,20 @@ async function getLedger(req, res) {
   }
 }
 
-async function verifyChain(req, res) {
-  try {
-    await sql.connect(config);
-    const result = await sql.query`SELECT * FROM ComplianceLedger ORDER BY id ASC`;
-    const entries = result.recordset;
+function verifyChain(chain) {
+    for (let i = 1; i < chain.length; i++) {
+        const current = chain[i];
+        const prev = chain[i - 1];
 
-    let valid = true;
-    for (let i = 1; i < entries.length; i++) {
-      const prev = entries[i - 1];
-      const current = entries[i];
-      const expectedHash = generateHash({ industry_id: prev.industry_id, data: prev.data, timestamp: prev.timestamp }, prev.prev_hash);
-      if (prev.hash !== expectedHash || current.prev_hash !== prev.hash) {
-        valid = false;
-        break;
-      }
+        // Recompute current hash
+        const expectedHash = computeHash(current.data, current.prev_hash); // your hash logic
+
+        // ✅ Now verify:
+        if (prev.hash !== current.prev_hash || current.hash !== expectedHash) {
+            return false;
+        }
     }
-
-    res.json({ valid });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+    return true;
 }
 
 module.exports = { addEntry, getLedger, verifyChain };
