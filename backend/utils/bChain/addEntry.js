@@ -1,6 +1,6 @@
 // server/addEntry.js
 const sql = require('mssql');
-const dbConfig = require('./db');
+const dbConfig = require('../../db/db');
 const { computeHash } = require('./verifyChain');
 
 async function addEntry(data) {
@@ -14,16 +14,17 @@ async function addEntry(data) {
     const prevBlock = prevResult.recordset[0];
     const prevHash = prevBlock ? prevBlock.hash : 'GENESIS';
 
-    const currentHash = computeHash(data, prevHash);
+    const currentHash = computeHash(JSON.stringify(data), prevHash);
+    // console.log(" theData: ",JSON.stringify(data), " prevHash: ", prevHash," currentHash: ", currentHash);
 
     const insertQuery = `
-      INSERT INTO ComplianceLedger (field1, field2, hash, prev_hash)
-      VALUES (@field1, @field2, @hash, @prev_hash)
+      INSERT INTO ComplianceLedger (projId, compReport, hash, prev_hash)
+      VALUES (@projId, @compReport, @hash, @prev_hash)
     `;
 
     const request = new sql.Request();
-    request.input('field1', sql.VarChar, data.field1);
-    request.input('field2', sql.VarChar, data.field2);
+    request.input('projId', sql.VarChar, data.projId);
+    request.input('compReport', sql.VarChar, data.compReport);
     request.input('hash', sql.VarChar, currentHash);
     request.input('prev_hash', sql.VarChar, prevHash);
 

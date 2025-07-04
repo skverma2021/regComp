@@ -2,18 +2,20 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
-const dbConfig = require('../db');
-const { verifyChain } = require('../verifyChain');
+
+const dbConfig = require('../db/db')
+
+const { verifyChain } = require('../utils/bChain/verifyChain');
 
 router.get('/verify-chain', async (req, res) => {
   try {
     await sql.connect(dbConfig);
-    const result = await sql.query('SELECT * FROM ComplianceLedger ORDER BY id ASC');
-
+    const result = await sql.query('SELECT * FROM ComplianceLedger ORDER BY projId ASC');
+    console.log(result.recordset);
     const chain = result.recordset.map(block => ({
       data: {
-        field1: block.field1,
-        field2: block.field2,
+        projId: block.projId,
+        compReport: block.compReport,
       },
       hash: block.hash,
       prev_hash: block.prev_hash

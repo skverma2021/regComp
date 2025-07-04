@@ -13,8 +13,8 @@ function verifyChain(chain) {
 
   for (let i = 0; i < chain.length; i++) {
     const current = chain[i];
-    const expectedHash = computeHash(current.data, current.prev_hash);
-
+    const expectedHash = computeHash(JSON.stringify(current.data), current.prev_hash);
+    // console.log(" theData: ", JSON.stringify(current.data), " prevHash: ", current.prev_hash, " expectedHash: ", expectedHash)
     if (current.hash !== expectedHash) {
       console.warn(`Invalid hash at block #${i + 1}`);
       return false;
