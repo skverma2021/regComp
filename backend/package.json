@@ -13,9 +13,14 @@
     "cors": "^2.8.5",
     "dotenv": "^17.0.0",
     "express": "^5.1.0",
+<<<<<<< HEAD
     "mssql": "^11.0.1"
   },
   "devDependencies": {
     "jest": "^30.0.4"
+=======
+    "mssql": "^11.0.1",
+    "sqlite3": "^5.1.7"
+>>>>>>> e27c139c8e563607afbef7df801387276e52b32e
   }
 }
