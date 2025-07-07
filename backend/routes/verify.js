@@ -11,7 +11,7 @@ router.get('/verify-chain', async (req, res) => {
   try {
     await sql.connect(dbConfig);
     const result = await sql.query('SELECT * FROM ComplianceLedger ORDER BY projId ASC');
-    console.log(result.recordset);
+    // console.log(result.recordset);
     const chain = result.recordset.map(block => ({
       data: {
         projId: block.projId,

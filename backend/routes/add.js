@@ -8,8 +8,6 @@ router.post('/add-compliance-entry', async (req, res) => {
     projId: req.body.theProj,
     compReport: req.body.theReport,
   };
-//   console.log(data.field1)
-//   console.log(data.field2)
 
   const result = await addEntry(data);
 
